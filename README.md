@@ -7,7 +7,9 @@
 
 <a name="appinfo"></a>
 ## Project Information
-This project is about embedding a polling inside a web page by using iframe. It's because some ad deliver tools don't support node.js, I use cdn and js to build it.
+This project is about embedding a polling inside a web page by using iframe. It's because some ad deliver tools don't support node.js, I use cdn and js to build it. <br>
+Demo: https://iframe-polling-demo.netlify.app/ <br>
+
 ![image](https://github.com/SY-NG/polling_app/blob/master/doc/q1.PNG) <br/>
 
 <a name="technologies"></a>

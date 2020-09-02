@@ -8,6 +8,7 @@
 <a name="appinfo"></a>
 ## Project Information
 This project is about embedding a polling inside a web page by using iframe. It's because some ad deliver tools don't support node.js, I use cdn and js to build it.
+![image](https://github.com/SY-NG/polling_app/blob/master/doc/q1.PNG) <br/>
 
 <a name="technologies"></a>
 ## Technologies 
@@ -18,7 +19,7 @@ This project is about embedding a polling inside a web page by using iframe. It'
 
 <a name="design"></a>
 ## The design
-![image](https://github.com/fishxxxx/polling-app/blob/master/design.PNG) <br/>
+![image](https://github.com/SY-NG/polling_app/blob/master/doc/structure.png) <br/>
 
 ### File Structure
 ```
@@ -31,9 +32,18 @@ This project is about embedding a polling inside a web page by using iframe. It'
 
 <a name="features"></a>
 ## Features
- - Single select
- - Mulitiple select
- - Rating select
+ - Light & Dark Mode 
+ - Single select <br/>
+<img src="https://github.com/SY-NG/polling_app/blob/master/doc/q1.PNG" /> <br/>
+<img src="https://github.com/SY-NG/polling_app/blob/master/doc/q1-dark.PNG" /> <br/><br/>
+
+ - Mulitiple select <br/>
+ <img src="https://github.com/SY-NG/polling_app/blob/master/doc/multq.PNG" /> <br/>
+<img src="https://github.com/SY-NG/polling_app/blob/master/doc/multq-dark.PNG" /> <br/><br/>
+
+ - Rating select <br/>
+ <img src="https://github.com/SY-NG/polling_app/blob/master/doc/rating.PNG" /> <br/>
+<img src="https://github.com/SY-NG/polling_app/blob/master/doc/rating-dark.PNG" /> <br/><br/>
 
 <a name="installation"></a>
 ## Installation

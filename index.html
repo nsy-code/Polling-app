@@ -1,0 +1,32 @@
+<html data-theme="light">
+    <head>
+        <title>Iframe Polling</title>
+        <script>
+            function changeThemeBtn () {
+                const THEME = window.parent.document
+                    .getElementsByTagName("html")[0]
+                    .getAttribute("data-theme");
+
+                if (THEME === "light") {
+                    window.parent.document
+                        .getElementsByTagName("html")[0]
+                        .setAttribute("data-theme", "dark");
+                } else {
+                    window.parent.document
+                        .getElementsByTagName("html")[0]
+                        .setAttribute("data-theme", "light");
+                }
+            };
+        </script>
+    </head>
+    <body>
+        <div>
+            <div>
+                <button onclick="changeThemeBtn()" style="margin-bottom: 10px;">Change Theme</button>
+            </div>
+            <div>
+                <iframe src="./main.html" width="1" height="1"></iframe>
+            </div>
+        </div>
+    </body>
+</html>

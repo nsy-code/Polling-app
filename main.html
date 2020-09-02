@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<header>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- Vue Development -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+    <!-- Vue Production -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="light.css" />
+    <link rel="stylesheet" href="dark.css" />
+    <!-- Data -->
+    <script src="./data.js"></script>
+    <!-- Variables -->
+    <script>
+        let WIDTH = "100%";
+        let HEIGHT = "235px";
+
+        // Get the current theme from parent html tag
+        const THEME = window.parent.document
+            .getElementsByTagName("html")[0]
+            .getAttribute("data-theme");
+        const theme = THEME ? THEME : "light";
+
+        // Create a monitor to observe the theme attribute change
+        const elementHTML = window.parent.document.getElementsByTagName(
+            "html"
+        )[0];
+        const observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                if (
+                    mutation.type == "attributes" &&
+                    mutation.attributeName == "data-theme"
+                ) {
+                    let THEME = window.parent.document
+                        .getElementsByTagName("html")[0]
+                        .getAttribute("data-theme");
+                    app.setTheme(THEME);
+                }
+            });
+        });
+        observer.observe(elementHTML, {
+            attributes: true,
+        });
+    </script>
+</header>
+<div id="app">
+    <div :class="'container'+' '+theme">
+        <div class="wrapper">
+            <div class="title">{{title}}</div>
+            <survey-list
+                :question="questions[current]"
+                :answers="answers"
+                :current="current"
+                :end="isEnd"
+            >
+            </survey-list>
+            <span class="message" :style="{display: message ? 'block' : 'none'}"
+                >{{message}}</span
+            >
+            <div
+                id="next"
+                class="button"
+                :class="{'disable':(answers[current+1].length < questions[current].rules.minSelectedAns) || (questions[current].rules.maxSelectedAns && answers[current+1].length > questions[current].rules.maxSelectedAns) ? true : false}"
+                v-on:click="next"
+                v-bind:style="{display: isEnd || questions[current].isLast ? 'none' : 'block',}"
+            >
+                Next ({{current+1}}/{{questions.length}})
+            </div>
+            <div
+                id="button"
+                class="button"
+                :class="{'disable':(answers[current+1].length < questions[current].rules.minSelectedAns) || (questions[current].rules.maxSelectedAns && answers[current+1].length > questions[current].rules.maxSelectedAns) ? true : false}"
+                v-on:click="submit"
+                v-bind:style="{display: !isEnd && questions[current].isLast ? 'block' : 'none',}"
+            >
+                Submit Votes
+            </div>
+        </div>
+    </div>
+</div>
+<div id="loading" style="display: none">
+    <div class="lds-ripple">
+        <div></div>
+    </div>
+</div>
+
+<!-- Vue Templates -->
+<script type="text/x-template" id="survey-template">
+    <div class="poll-content-container" :style="{display: !end ? 'block' : 'none'}">
+        <h1 class="question">{{question.question}}</h1>
+        <div v-if="question.type==='rating'">
+            <rating-list
+                :count="question.ans"
+                :minDescri="question.minDescri"
+                :maxDescri="question.maxDescri"
+                :answers="answers"
+                :current="current"
+                :inputType = "question.type"
+                :qId= "question.id"
+            ></rating-list>
+        </div>
+        <div v-else>
+            <choices-list
+                v-for="(choice, index) in question.ans"
+                :option="choice"
+                :key="index"
+                :answers="answers"
+                :current="current"
+                :inputType="question.type"
+                :qId="question.id"
+            ></choices-list>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="ansOption-template">
+    <div class="answer-container">
+        <div>
+            <label>
+                <input :type="inputType" :name="'q' + qId" :value="option.value" v-model="answers[current+1]" />
+                <span class="option-text-container" style="width: 100%;">
+                    <div style="display:flex; align-item:center;">
+                        <span class="option-text">{{option.label}}</span>
+                    </div>
+                </span>
+            </label>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="ratingOption-template">
+    <div class="ratting-container">
+        <div class="rating-desc-container">
+            <div>{{minDescri}}</div>
+            <div>{{maxDescri}}</div>
+        </div>
+        <table class="rating-table">
+            <tbody>
+                <tr>
+                    <td :class="answers[current+1] === index? 'checked' : 'unchecked'"  v-for="index in count" :key="index" v-on:click="answers[current+1]= index">
+                        {{index}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</script>
+
+<!-- Vue Component -->
+<script>
+    Vue.component("survey-list", {
+        props: {
+            question: {
+                type: Object,
+                required: true,
+            },
+            answers: Object,
+            current: Number,
+            end: Boolean,
+        },
+        template: "#survey-template",
+    });
+
+    Vue.component("choices-list", {
+        props: {
+            option: {
+                type: Object,
+                required: true,
+            },
+            answers: Object,
+            current: Number,
+            inputType: String,
+            qId: Number,
+        },
+        template: "#ansOption-template",
+    });
+
+    Vue.component("rating-list", {
+        props: {
+            count: {
+                type: Number,
+                required: true,
+            },
+            answers: Object,
+            current: Number,
+            minDescri: String,
+            maxDescri: String,
+            inputType: String,
+            qId: Number,
+        },
+        template: "#ratingOption-template",
+    });
+
+    Vue.prototype.$log = console.log;
+
+    let answers = {};
+    for (var x = 1; x <= questions.length; x++) {
+        answers[x] = [];
+    }
+
+    var app = new Vue({
+        el: "#app",
+        data: {
+            current: 0,
+            title: "Poll",
+            isEnd: false,
+            message: "",
+            theme: theme,
+            answers: answers,
+            questions: questions,
+        },
+        mounted() {
+            // let vue have time to do mounting
+            setTimeout(this.getHeight, 300);
+        },
+        updated: function () {
+            var element = document.getElementById("app");
+            var positionInfo = element.getBoundingClientRect();
+            var height = positionInfo.height + 1;
+            HEIGHT = height.toString() + "px";
+            onResizeHandler();
+        },
+        methods: {
+            getHeight: function () {
+                var element = document.getElementById("app");
+                var positionInfo = element.getBoundingClientRect();
+                var height = positionInfo.height + 1;
+                HEIGHT = height.toString() + "px";
+                onResizeHandler();
+            },
+            next: function () {
+                if (!this.validateData()) return;
+                // Go to next page
+                this.current++;
+            },
+            submit: function () {
+                if (!this.validateData()) return;
+                this.postData();
+            },
+            validateData: function () {
+                let rules = this.questions[this.current].rules;
+                let currentAns = this.answers[this.current + 1];
+
+                // Validation
+                if (!currentAns || currentAns.length === 0) {
+                    return false;
+                }
+                if (
+                    rules.minSelectedAns > 1 &&
+                    currentAns.length < rules.minSelectedAns
+                ) {
+                    return false;
+                }
+                if (
+                    rules.maxSelectedAns &&
+                    currentAns.length > rules.maxSelectedAns
+                ) {
+                    return false;
+                }
+                return true;
+            },
+            postData: function () {
+                this.isEnd = true;
+                let data = {
+                    polling: this.answers,
+                };
+
+                //  JQuery Part
+                let loading = $("#loading");
+                let that = this;
+                loading.fadeIn(300);
+
+                // Send Data to Server
+
+                setTimeout(() => {
+                    loading.fadeOut(200);
+                    that.message = "Thank you";
+                }, 300);
+            },
+            setTheme: function (theme) {
+                this.theme = theme;
+            },
+        },
+    });
+</script>
+
+<script>
+    function onResizeHandler() {
+        var frame = window.frameElement;
+        if (!frame || !frame.parentElement) return;
+
+        var windowWidth = $(parent.window).width();
+
+        frame.style.width = WIDTH;
+        frame.parentElement.style.width = WIDTH;
+        frame.parentElement.parentElement.style.width = WIDTH;
+
+        frame.style.height = HEIGHT;
+        frame.parentElement.style.height = HEIGHT;
+        frame.parentElement.parentElement.style.height = HEIGHT;
+    }
+    var frame = window.frameElement;
+
+    window.frameElement.scrolling = "no";
+    onResizeHandler();
+</script>

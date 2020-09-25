@@ -10,7 +10,7 @@
 This project is about embedding a polling inside a web page by using iframe. It's because some ad deliver tools don't support node.js, I use cdn and js to build it. <br>
 Demo: https://iframe-polling-demo.netlify.app/ <br>
 
-![image](https://github.com/SY-NG/polling_app/blob/master/doc/q1.PNG) <br/>
+![image](./doc/q1.PNG) <br/>
 
 <a name="technologies"></a>
 ## Technologies 
@@ -21,7 +21,7 @@ Demo: https://iframe-polling-demo.netlify.app/ <br>
 
 <a name="design"></a>
 ## The design
-![image](https://github.com/SY-NG/polling_app/blob/master/doc/structure.png) <br/>
+![image](./doc/structure.png) <br/>
 
 ### File Structure
 ```
@@ -36,16 +36,16 @@ Demo: https://iframe-polling-demo.netlify.app/ <br>
 ## Features
  - Light & Dark Mode 
  - Single select <br/>
-<img src="https://github.com/SY-NG/polling_app/blob/master/doc/q1.PNG" /> <br/>
-<img src="https://github.com/SY-NG/polling_app/blob/master/doc/q1-dark.PNG" /> <br/><br/>
+<img src="./doc/q1.PNG" /> <br/>
+<img src="./doc/q1-dark.PNG" /> <br/><br/>
 
  - Mulitiple select <br/>
- <img src="https://github.com/SY-NG/polling_app/blob/master/doc/multq.PNG" /> <br/>
-<img src="https://github.com/SY-NG/polling_app/blob/master/doc/multq-dark.PNG" /> <br/><br/>
+ <img src="./doc/multq.PNG" /> <br/>
+<img src="./doc/multq-dark.PNG" /> <br/><br/>
 
  - Rating select <br/>
- <img src="https://github.com/SY-NG/polling_app/blob/master/doc/rating.PNG" /> <br/>
-<img src="https://github.com/SY-NG/polling_app/blob/master/doc/rating-dark.PNG" /> <br/><br/>
+ <img src="./doc/rating.PNG" /> <br/>
+<img src="./doc/rating-dark.PNG" /> <br/><br/>
 
 <a name="installation"></a>
 ## Installation
